@@ -48,12 +48,35 @@ void byteCodeFromArgVFile(int argc, char* argv[]){
 	else runByteCode(readBytes(argv[1]));
 }
 
+byte_t* byteArrayFromHexString(string hexString){
+	const int size = hexString.size();
+	byte_t* byteArray=new byte_t[size/2];
+
+	string hex="0123456789ABCDEF";
+	for (int i=0; i<size/2; i++) {
+		int n1=hex.find(hexString.at(i*2));
+		int n2=hex.find(hexString.at(i*2+1));
+		int v=n1*16+n2;
+		//cout<<v<<endl;
+		byteArray[i]=v;
+	}
+	return byteArray;
+}
+
 void byteCodeFromProgNotArray(){
 	byte_t progNot[]={0xFF, 0xFE, 0x02, 0x01, 0xFE, 0x00, 0x00, 0x00, 0xFE, 0x01, 0x00, 0x00};
 	runByteCode(progNot);
 }
 
+void byteCodeFromProgNotArray2(){
+	//byte_t progNot[]={0xFF, 0xFE, 0x02, 0x01, 0xFE, 0x00, 0x00, 0x00, 0xFE, 0x01, 0x00, 0x00};
+	string progNotString="FFFE0201FE000000FE010000";
+	byte_t* progNotArray = byteArrayFromHexString(progNotString);
+	runByteCode(progNotArray);
+	delete[] progNotArray;
+}
+
 int main(int argc, char* argv[]){
 	//byteCodeFromArgVFile(argc, argv);
-	byteCodeFromProgNotArray();
+	byteCodeFromProgNotArray2();
 }
