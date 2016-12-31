@@ -27,6 +27,9 @@ class TagSet():
 	def getTag(self, tag):
 		return self.mapping[tag]
 
+	def __repr__(self):
+		return sorted_dict_representation(self.mapping)
+
 def parse_program(program):
 	ln=-1
 	tags=[]
@@ -118,12 +121,14 @@ out=a3
 start
 '''
 
-def program_to_bytecode(program):
-	parsed_program=parse_program(program)
+def program_to_bytecode(program, parsed=False):
+	if parsed:
+		parsed_program=program
+	else:
+		parsed_program=parse_program(program)
 	exe,sets=parsed_program
 	bytecode=[]
 	for i in exe:
-		print(i)
 		if i[1]=='copy':
 			v=(i[2])[0]
 			def v2(v):
@@ -157,5 +162,26 @@ def n_to_hex(n):
 def bytecode_to_hex_string(bytecode):
 	return ''.join(map(n_to_hex,bytecode))
 
-bytecode=program_to_bytecode(prog_array_indexing)
-print(bytecode_to_hex_string(bytecode))
+def sorted_dict_representation(d):
+	import operator
+	sorted_d = sorted(d.items(), key=operator.itemgetter(1))
+	dict_repr='{'
+	for i in range(len(sorted_d)):
+		cur=sorted_d[i]
+		dict_repr+=repr(cur[0])
+		dict_repr+=': '
+		dict_repr+=repr(cur[1])
+		if i<len(sorted_d)-1:
+			dict_repr+=', '
+	dict_repr+='}'
+	return dict_repr
+
+if __name__=='__main__':
+	print('demo of program compilation')
+	bytecode=program_to_bytecode(prog_array_indexing)
+	print(bytecode_to_hex_string(bytecode))
+
+	print('demo of sorted by value dictionary representation')
+	d={'sel1': 7, 'i10': 13, 'print': 17, 'i01': 11, 'sel0': 5, 'i00': 9, 'i11': 15, 'start': 0}
+	print(sorted_dict_representation(d))
+
