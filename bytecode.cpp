@@ -199,6 +199,13 @@ void byteCodeFromProgNotArray4(){
 	delete[] progNotArray;
 }
 
+void prog_array_indexing(){
+	string progString="0000FE0001FE0002FE00FF0101050700FF0201090D00FF02010B0F00030001111100040001111100050001111100060001111100FE0300FE0400FE0500FE06010000";
+	byte_t* progArray = byteArrayFromHexString(progString);
+	runByteCode3(progArray);
+	delete[] progArray;
+}
+
 int main(int argc, char* argv[]){
 	//byteCodeFromArgVFile(argc, argv);
 	//byteCodeFromProgNotArray2();
@@ -206,5 +213,7 @@ int main(int argc, char* argv[]){
 	// added new
 	//runByteCode2();
 	//byteCodeFromProgNotArray3();
-	byteCodeFromProgNotArray4();
+	//byteCodeFromProgNotArray4();
+
+	prog_array_indexing();
 }
